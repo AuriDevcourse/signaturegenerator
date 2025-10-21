@@ -41,6 +41,13 @@
 .custom-button {
     position: relative;
     overflow: hidden;
+    color: white;
+}
+
+.custom-button span {
+    position: relative;
+    z-index: 10;
+    color: white;
 }
 
 .custom-button::before {
