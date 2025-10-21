@@ -95,7 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!linkUrl) return;
         
         const currentMessage = messageTextarea.value;
-        const linkHtml = `<a href="${linkUrl}" style="color: inherit; text-decoration: underline;">${linkText}</a>`;
+        // Note: This creates a link for desktop (black). Mobile signature rendering will need to handle color separately.
+        const linkHtml = `<a href="${linkUrl}" style="color: #111111 !important; text-decoration: underline;">${linkText}</a>`;
         
         // Insert at cursor position or append
         const cursorPos = messageTextarea.selectionStart;
@@ -230,13 +231,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const instagram = document.getElementById('instagram').value;
         const photo = document.getElementById('photo').value;
         const message = document.getElementById('message').value;
+        
+        // Process message for mobile (change link colors to light)
+        const mobileMessage = message.replace(/color:\s*#111111\s*!important/g, 'color: #f1f1f1 !important');
 
         const signatureHTML = `
             <table style="width: 500px; font-family: Verdana, sans-serif; font-size: 12px; color: #111111;">
                 <tr>
                     <td style="width: 120px; vertical-align: middle; text-align: center;">
                         ${photo ? `<img src="${photo}" alt="${name}" style="width: 100px; height: 100px; border-radius: 6px; border: 1px solid #FF0028; object-fit: cover; display: block; margin: 0 auto 8px;">` : `<div style="width: 100px; height: 100px; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; border: 1px solid #ccc; border-radius: 6px;"><span style="font-size: 9px; color: #666; text-align: center; font-family: Verdana, sans-serif; padding: 5px;">Your Picture Here</span></div>`}
-                        ${personalLinkedin ? `<a href="${personalLinkedin}" style="color: #000000; text-decoration: underline; font-size: 10px; font-family: Verdana, sans-serif; display: block; text-align: center;">Let's connect</a>` : ''}
+                        ${personalLinkedin ? `<a href="${personalLinkedin}" style="color: #111111 !important; text-decoration: underline; font-size: 10px; font-family: Verdana, sans-serif; display: block; text-align: center;">Let's connect</a>` : ''}
                     </td>
                     <td style="vertical-align: top; padding-left: 15px; border-left: 2px solid #FF0028; color: inherit;">
                         <p style="margin: 0; font-family: Verdana, sans-serif; font-size: 18px; font-weight: bold; line-height: 1; color: inherit;">${name}</p>
@@ -245,15 +249,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/mailred.png" width="14" height="14" style="display: block;"></td>
-                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="mailto:${email}" style="color: inherit; text-decoration: underline; font-family: Verdana, sans-serif;">${email}</a></td>
+                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="mailto:${email}" style="color: #111111 !important; text-decoration: underline; font-family: Verdana, sans-serif;">${email}</a></td>
                             </tr>
                             ${phone ? `<tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/callred.png" width="14" height="14" style="display: block;"></td>
-                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="tel:${phone}" style="color: inherit; text-decoration: underline; font-family: Verdana, sans-serif;">${phone}</a></td>
+                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="tel:${phone}" style="color: #111111 !important; text-decoration: underline; font-family: Verdana, sans-serif;">${phone}</a></td>
                             </tr>` : ''}
                             ${website ? `<tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/linkred.png" width="14" height="14" style="display: block;"></td>
-                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="${website}" style="color: inherit; text-decoration: underline; font-family: Verdana, sans-serif;">${website}</a></td>
+                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="${website}" style="color: #111111 !important; text-decoration: underline; font-family: Verdana, sans-serif;">${website}</a></td>
                             </tr>` : ''}
                             ${address ? `<tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/locationred.png" width="14" height="14" style="display: block;"></td>
@@ -278,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tr>
                     <td style="width: 120px; vertical-align: middle; text-align: center;">
                         ${photo ? `<img src="${photo}" alt="${name}" style="width: 100px; height: 100px; border-radius: 6px; border: 1px solid #FF0028; object-fit: cover; display: block; margin: 0 auto 8px;">` : `<div style="width: 100px; height: 100px; background-color: #555; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; border: 1px solid #666; border-radius: 6px;"><span style="font-size: 9px; color: #ccc; text-align: center; font-family: Verdana, sans-serif; padding: 5px;">Your Picture Here</span></div>`}
-                        ${personalLinkedin ? `<a href="${personalLinkedin}" style="color: #ffffff; text-decoration: underline; font-size: 10px; font-family: Verdana, sans-serif; display: block; text-align: center;">Let's connect</a>` : ''}
+                        ${personalLinkedin ? `<a href="${personalLinkedin}" style="color: #f1f1f1 !important; text-decoration: underline; font-size: 10px; font-family: Verdana, sans-serif; display: block; text-align: center;">Let's connect</a>` : ''}
                     </td>
                     <td style="vertical-align: top; padding-left: 15px; border-left: 2px solid #FF0028;">
                         <p style="margin: 0; font-family: Verdana, sans-serif; font-size: 18px; font-weight: bold; line-height: 1; color: inherit;">${name}</p>
@@ -287,15 +291,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/mailred.png" width="14" height="14" style="display: block;"></td>
-                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="mailto:${email}" style="color: inherit; text-decoration: underline; font-family: Verdana, sans-serif;">${email}</a></td>
+                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="mailto:${email}" style="color: #f1f1f1 !important; text-decoration: underline; font-family: Verdana, sans-serif;">${email}</a></td>
                             </tr>
                             ${phone ? `<tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/callred.png" width="14" height="14" style="display: block;"></td>
-                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="tel:${phone}" style="color: inherit; text-decoration: underline; font-family: Verdana, sans-serif;">${phone}</a></td>
+                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="tel:${phone}" style="color: #f1f1f1 !important; text-decoration: underline; font-family: Verdana, sans-serif;">${phone}</a></td>
                             </tr>` : ''}
                             ${website ? `<tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/linkred.png" width="14" height="14" style="display: block;"></td>
-                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="${website}" style="color: inherit; text-decoration: underline; font-family: Verdana, sans-serif;">${website}</a></td>
+                                <td style="vertical-align: top; padding: 2px 0; font-family: Verdana, sans-serif; font-size: 10px;"><a href="${website}" style="color: #f1f1f1 !important; text-decoration: underline; font-family: Verdana, sans-serif;">${website}</a></td>
                             </tr>` : ''}
                             ${address ? `<tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/locationred.png" width="14" height="14" style="display: block;"></td>
@@ -307,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${facebook ? `<a href="${facebook}" style="margin-right: 4px; display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/facebookred.png" width="17" height="17" style="display: block;"></a>` : ''}
                             ${instagram ? `<a href="${instagram}" style="display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/Instagramred.png" width="17" height="17" style="display: block;"></a>` : ''}
                         </p>` : ''}
-                        ${message ? `<p style="margin-top: 10px; font-style: italic; font-family: Verdana, sans-serif; font-size: 10px; color: #ccc; max-width: 200px;">${message}</p>` : ''}
+                        ${message ? `<p style="margin-top: 10px; font-style: italic; font-family: Verdana, sans-serif; font-size: 10px; color: #ccc; max-width: 200px;">${mobileMessage}</p>` : ''}
                     </td>
                 </tr>
             </table>
