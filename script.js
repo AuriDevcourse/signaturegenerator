@@ -82,16 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('file', blob, 'signature-photo.png');
 
-            const siteUrl = 'https://techbbq.dk/';
-            const username = 'Auri';
-            const appPassword = 'PvOF ok6v UsZ7 7847 m6FZ Ekwh';
-
-            fetch(`${siteUrl}wp-json/wp/v2/media`, {
+            fetch('https://techbbq.dk/wp-json/signature/v1/upload', {
                 method: 'POST',
-                headers: {
-                    'Authorization': 'Basic ' + btoa(`${username}:${appPassword}`),
-                    'Content-Disposition': 'attachment; filename=signature-photo.png'
-                },
                 body: formData,
             })
             .then(response => {
