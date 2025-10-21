@@ -129,3 +129,53 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
+/* Responsive Cropper.js styles */
+#crop-modal .cropper-container {
+    max-width: 100% !important;
+    max-height: 35vh !important;
+    height: 35vh !important;
+    width: 100% !important;
+}
+
+@media (min-width: 640px) {
+    #crop-modal .cropper-container {
+        max-height: 45vh !important;
+        height: 45vh !important;
+    }
+}
+
+@media (min-width: 768px) {
+    #crop-modal .cropper-container {
+        max-height: 50vh !important;
+        height: 50vh !important;
+    }
+}
+
+/* Ensure cropper image is responsive */
+#crop-modal img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Ensure cropper canvas fits properly */
+#crop-modal .cropper-canvas,
+#crop-modal .cropper-crop-box {
+    max-width: 100% !important;
+}
+
+/* Make cropper controls touch-friendly on mobile */
+@media (max-width: 640px) {
+    #crop-modal .cropper-point,
+    #crop-modal .cropper-line {
+        width: 12px !important;
+        height: 12px !important;
+    }
+    
+    #crop-modal .cropper-point.point-se {
+        width: 16px !important;
+        height: 16px !important;
+    }
+}
