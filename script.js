@@ -7,9 +7,104 @@ document.addEventListener('DOMContentLoaded', () => {
     const cropAndUploadBtn = document.getElementById('crop-and-upload-btn');
     const brightnessSlider = document.getElementById('brightness');
     const saturationSlider = document.getElementById('saturation');
+    const addLinkBtn = document.getElementById('add-link-btn');
+    const messageTextarea = document.getElementById('message');
     let cropper;
 
+    // Tutorial functionality
+    const tutorialModal = document.getElementById('tutorial-modal');
+    const tutorialStep = document.getElementById('tutorial-step');
+    const tutorialDots = document.getElementById('tutorial-dots');
+    const tutorialNext = document.getElementById('tutorial-next');
+    const tutorialPrev = document.getElementById('tutorial-prev');
+    
+    const tutorialSteps = [
+        {
+            title: "Step 1: Fill in Your Details",
+            content: "Enter your personal information in the form on the left side. Start with your name, job title, email, and phone number."
+        },
+        {
+            title: "Step 2: Upload Your Photo",
+            content: "Click the 'Upload Image' button to add your profile photo. You can crop and adjust the image before uploading."
+        },
+        {
+            title: "Step 3: Add Optional Information",
+            content: "Expand 'Default Information' to add your address, website, and social media links. You can also add a personal message."
+        },
+        {
+            title: "Step 4: Preview Your Signature",
+            content: "Check the Desktop and Mobile previews on the right to see how your signature will look in different email clients."
+        },
+        {
+            title: "Step 5: Copy & Use",
+            content: "Once you're happy with your signature, click the 'Copy Signature' button and paste it into your email client's signature settings."
+        }
+    ];
+
+    let currentStep = 0;
+
+    function showTutorialStep(stepIndex) {
+        const step = tutorialSteps[stepIndex];
+        tutorialStep.innerHTML = `
+            <h3 class="text-lg font-semibold text-primary">${step.title}</h3>
+            <p class="text-white/80">${step.content}</p>
+        `;
+
+        // Update dots
+        tutorialDots.innerHTML = tutorialSteps.map((_, i) => 
+            `<div class="w-2 h-2 rounded-full ${i === stepIndex ? 'bg-primary' : 'bg-white/30'}"></div>`
+        ).join('');
+
+        // Update buttons
+        tutorialPrev.classList.toggle('hidden', stepIndex === 0);
+        tutorialNext.querySelector('span').textContent = stepIndex === tutorialSteps.length - 1 ? 'Get Started' : 'Next';
+    }
+
+    tutorialNext.addEventListener('click', () => {
+        if (currentStep < tutorialSteps.length - 1) {
+            currentStep++;
+            showTutorialStep(currentStep);
+        } else {
+            tutorialModal.classList.add('hidden');
+            localStorage.setItem('tutorialCompleted', 'true');
+        }
+    });
+
+    tutorialPrev.addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep--;
+            showTutorialStep(currentStep);
+        }
+    });
+
+    // Show tutorial on first visit
+    if (!localStorage.getItem('tutorialCompleted')) {
+        showTutorialStep(0);
+    } else {
+        tutorialModal.classList.add('hidden');
+    }
+
     uploadBtn.addEventListener('click', () => photoUpload.click());
+
+    // Add link functionality for optional message
+    addLinkBtn.addEventListener('click', () => {
+        const linkText = prompt('Enter the text to display:');
+        if (!linkText) return;
+        
+        const linkUrl = prompt('Enter the URL:');
+        if (!linkUrl) return;
+        
+        const currentMessage = messageTextarea.value;
+        const linkHtml = `<a href="${linkUrl}" style="color: inherit; text-decoration: underline;">${linkText}</a>`;
+        
+        // Insert at cursor position or append
+        const cursorPos = messageTextarea.selectionStart;
+        const textBefore = currentMessage.substring(0, cursorPos);
+        const textAfter = currentMessage.substring(cursorPos);
+        
+        messageTextarea.value = textBefore + linkHtml + textAfter;
+        updatePreview();
+    });
 
     photoUpload.addEventListener('change', (e) => {
         const file = e.target.files[0];
@@ -129,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const phone = document.getElementById('phone').value;
         const website = document.getElementById('website').value;
         const address = document.getElementById('address').value;
+        const personalLinkedin = document.getElementById('personal-linkedin').value;
         const linkedin = document.getElementById('linkedin').value;
         const facebook = document.getElementById('facebook').value;
         const instagram = document.getElementById('instagram').value;
@@ -140,12 +236,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tr>
                     <td style="width: 120px; vertical-align: middle; text-align: center;">
                         ${photo ? `<img src="${photo}" alt="${name}" style="width: 100px; height: 100px; border-radius: 6px; border: 1px solid #FF0028; object-fit: cover; display: block; margin: 0 auto 8px;">` : `<div style="width: 100px; height: 100px; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; border: 1px solid #ccc; border-radius: 6px;"><span style="font-size: 9px; color: #666; text-align: center; font-family: Verdana, sans-serif; padding: 5px;">Your Picture Here</span></div>`}
-                        ${linkedin ? `<a href="${linkedin}" style="color: #000000; text-decoration: underline; font-size: 10px; font-family: Verdana, sans-serif; display: block; text-align: center;">Let's connect</a>` : ''}
+                        ${personalLinkedin ? `<a href="${personalLinkedin}" style="color: #000000; text-decoration: underline; font-size: 10px; font-family: Verdana, sans-serif; display: block; text-align: center;">Let's connect</a>` : ''}
                     </td>
                     <td style="vertical-align: top; padding-left: 15px; border-left: 2px solid #FF0028; color: inherit;">
                         <p style="margin: 0; font-family: Verdana, sans-serif; font-size: 18px; font-weight: bold; line-height: 1; color: inherit;">${name}</p>
                         <p style="margin: 2px 0; font-family: Verdana, sans-serif; font-size: 13px; line-height: 1; color: inherit;">${jobTitle}</p>
-                        <hr style="border: none; height: 1px; background-color: #FF0028; margin: 8px 0;">
+                        <hr style="border: none; height: 1px; background-color: #FF0028; margin: 8px 0; max-width: 200px;">
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/mailred.png" width="14" height="14" style="display: block;"></td>
@@ -165,11 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             </tr>` : ''}
                         </table>
                         ${(linkedin || facebook || instagram) ? `<p style="margin: 8px 0 2px 0;">
-                            ${linkedin ? `<a href="${linkedin}" style="margin-right: 4px; display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/linkedinred.png" width="20" height="20" style="display: block;"></a>` : ''}
-                            ${facebook ? `<a href="${facebook}" style="margin-right: 4px; display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/facebookred.png" width="20" height="20" style="display: block;"></a>` : ''}
-                            ${instagram ? `<a href="${instagram}" style="display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/Instagramred.png" width="20" height="20" style="display: block;"></a>` : ''}
+                            ${linkedin ? `<a href="${linkedin}" style="margin-right: 4px; display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/linkedinred.png" width="17" height="17" style="display: block;"></a>` : ''}
+                            ${facebook ? `<a href="${facebook}" style="margin-right: 4px; display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/facebookred.png" width="17" height="17" style="display: block;"></a>` : ''}
+                            ${instagram ? `<a href="${instagram}" style="display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/Instagramred.png" width="17" height="17" style="display: block;"></a>` : ''}
                         </p>` : ''}
-                        ${message ? `<p style="margin-top: 10px; font-style: italic; font-family: Verdana, sans-serif; font-size: 10px; color: #555;">${message}</p>` : ''}
+                        ${message ? `<p style="margin-top: 10px; font-style: italic; font-family: Verdana, sans-serif; font-size: 10px; color: #555; max-width: 200px;">${message}</p>` : ''}
                     </td>
                 </tr>
             </table>
@@ -182,12 +278,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tr>
                     <td style="width: 120px; vertical-align: middle; text-align: center;">
                         ${photo ? `<img src="${photo}" alt="${name}" style="width: 100px; height: 100px; border-radius: 6px; border: 1px solid #FF0028; object-fit: cover; display: block; margin: 0 auto 8px;">` : `<div style="width: 100px; height: 100px; background-color: #555; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; border: 1px solid #666; border-radius: 6px;"><span style="font-size: 9px; color: #ccc; text-align: center; font-family: Verdana, sans-serif; padding: 5px;">Your Picture Here</span></div>`}
-                        ${linkedin ? `<a href="${linkedin}" style="color: #ffffff; text-decoration: underline; font-size: 10px; font-family: Verdana, sans-serif; display: block; text-align: center;">Let's connect</a>` : ''}
+                        ${personalLinkedin ? `<a href="${personalLinkedin}" style="color: #ffffff; text-decoration: underline; font-size: 10px; font-family: Verdana, sans-serif; display: block; text-align: center;">Let's connect</a>` : ''}
                     </td>
                     <td style="vertical-align: top; padding-left: 15px; border-left: 2px solid #FF0028;">
                         <p style="margin: 0; font-family: Verdana, sans-serif; font-size: 18px; font-weight: bold; line-height: 1; color: inherit;">${name}</p>
                         <p style="margin: 2px 0; font-family: Verdana, sans-serif; font-size: 13px; line-height: 1; color: inherit;">${jobTitle}</p>
-                        <hr style="border: none; height: 1px; background-color: #555; margin: 8px 0;">
+                        <hr style="border: none; height: 1px; background-color: #555; margin: 8px 0; max-width: 200px;">
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr>
                                 <td style="width: 20px; vertical-align: top; padding: 2px 4px 2px 0;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/mailred.png" width="14" height="14" style="display: block;"></td>
@@ -207,11 +303,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             </tr>` : ''}
                         </table>
                         ${(linkedin || facebook || instagram) ? `<p style="margin: 8px 0 2px 0;">
-                            ${linkedin ? `<a href="${linkedin}" style="margin-right: 4px; display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/linkedinred.png" width="20" height="20" style="display: block;"></a>` : ''}
-                            ${facebook ? `<a href="${facebook}" style="margin-right: 4px; display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/facebookred.png" width="20" height="20" style="display: block;"></a>` : ''}
-                            ${instagram ? `<a href="${instagram}" style="display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/Instagramred.png" width="20" height="20" style="display: block;"></a>` : ''}
+                            ${linkedin ? `<a href="${linkedin}" style="margin-right: 4px; display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/linkedinred.png" width="17" height="17" style="display: block;"></a>` : ''}
+                            ${facebook ? `<a href="${facebook}" style="margin-right: 4px; display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/facebookred.png" width="17" height="17" style="display: block;"></a>` : ''}
+                            ${instagram ? `<a href="${instagram}" style="display: inline-block;"><img src="https://techbbq.dk/wp-content/uploads/2025/10/Instagramred.png" width="17" height="17" style="display: block;"></a>` : ''}
                         </p>` : ''}
-                        ${message ? `<p style="margin-top: 10px; font-style: italic; font-family: Verdana, sans-serif; font-size: 10px; color: #ccc;">${message}</p>` : ''}
+                        ${message ? `<p style="margin-top: 10px; font-style: italic; font-family: Verdana, sans-serif; font-size: 10px; color: #ccc; max-width: 200px;">${message}</p>` : ''}
                     </td>
                 </tr>
             </table>

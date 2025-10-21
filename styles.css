@@ -16,6 +16,8 @@
     --shadow-elegant: 0 10px 30px -10px hsl(var(--foreground) / 0.25);
 }
 
+/* Video Background - removed, using Tailwind classes in HTML */
+
 .font-headline {
     font-family: 'Playfair Display', serif; /* Using a more common serif as Host Grotesk is premium */
 }
@@ -35,22 +37,10 @@
     box-shadow: var(--shadow-elegant);
 }
 
-/* Custom Button Styles from styles.md */
+/* Custom Button Styles - Pseudo-element animation */
 .custom-button {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 120px;
-    height: 48px;
-    padding: 0 24px;
-    border: 1px solid;
-    border-radius: 12px;
-    font-weight: 600;
-    color: white;
     overflow: hidden;
-    transition: all 400ms ease-out;
-    transform: translateZ(0);
 }
 
 .custom-button::before {
@@ -58,44 +48,25 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 150%;
     height: 100%;
-    background-color: var(--fill-color);
-    transform: skewX(-30deg) translateX(-120%);
-    transition: transform 400ms ease-out;
-    z-index: -1;
+    transform: skewX(-30deg) translateX(-110%);
+    transition: transform 250ms ease-out;
+    z-index: 0;
 }
 
 .custom-button:hover::before {
-    transform: skewX(-30deg) translateX(0);
+    transform: skewX(-30deg) translateX(-10%);
 }
 
-.custom-button:active {
-    transform: scale(0.95);
+/* Primary Variant (Red) */
+.custom-button-primary::before {
+    background-color: hsl(var(--secondary));
 }
 
-/* Primary Variant (Red Glow) */
-.custom-button-primary {
-    --fill-color: hsl(var(--secondary));
-    border-color: hsl(var(--secondary) / 0.4);
-    box-shadow: 0 0 20px rgba(255, 0, 40, 0.6);
-}
-
-.custom-button-primary:hover {
-    color: white;
-    box-shadow: 0 0 30px rgba(255, 0, 40, 0.8);
-}
-
-/* Secondary Variant (Orange Glow) */
-.custom-button-secondary {
-    --fill-color: hsl(var(--primary));
-    border-color: hsl(var(--primary) / 0.4);
-    box-shadow: 0 0 20px rgba(244, 128, 34, 0.6);
-}
-
-.custom-button-secondary:hover {
-    color: white;
-    box-shadow: 0 0 30px rgba(244, 128, 34, 0.8);
+/* Secondary Variant (Orange) */
+.custom-button-secondary::before {
+    background-color: hsl(var(--primary));
 }
 
 
