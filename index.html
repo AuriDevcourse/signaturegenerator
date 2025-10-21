@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Signature Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: 'hsl(var(--primary))',
+                        secondary: 'hsl(var(--secondary))',
+                        accent: 'hsl(var(--accent))',
+                        danger: 'hsl(var(--danger))',
+                        background: 'hsl(var(--background))',
+                        surface: 'hsl(var(--surface))',
+                        foreground: 'hsl(var(--foreground))',
+                        muted: 'hsl(var(--muted))',
+                    },
+                    fontFamily: {
+                        headline: ['Playfair Display', 'serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'elegant': '0 10px 30px -10px hsl(var(--foreground) / 0.25)',
+                        'primary-glow': '0 0 20px rgba(244, 128, 34, 0.6)',
+                        'secondary-glow': '0 0 20px rgba(255, 0, 40, 0.6)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+</head>
+<body class="bg-background text-white font-body">
+    <div class="container mx-auto p-8">
+        <h1 class="text-4xl font-headline font-bold text-center mb-2">Email Signature Generator</h1>
+        <p class="text-center text-white/80 mb-12">Create your professional email signature.</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1 glass p-6 rounded-2xl">
+                <h2 class="text-2xl font-headline font-semibold mb-6">Enter Your Details</h2>
+                <form id="signature-form" class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-white/80 mb-1">Full Name</label>
+                        <input type="text" id="name" class="w-full bg-white/10 rounded-lg border border-white/20 px-3 py-2 focus:ring-primary focus:border-primary" placeholder="John Doe" value="Thomas Ebdrup">
+                    </div>
+                    <div>
+                        <label for="job-title" class="block text-sm font-medium text-white/80 mb-1">Job Title</label>
+                        <input type="text" id="job-title" class="w-full bg-white/10 rounded-lg border border-white/20 px-3 py-2 focus:ring-primary focus:border-primary" placeholder="Software Engineer" value="CEO at TechBBQ">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-white/80 mb-1">Email</label>
+                        <input type="email" id="email" class="w-full bg-white/10 rounded-lg border border-white/20 px-3 py-2 focus:ring-primary focus:border-primary" placeholder="john.doe@example.com" value="thomas@techbbq.dk">
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-white/80 mb-1">Phone</label>
+                        <input type="tel" id="phone" class="w-full bg-white/10 rounded-lg border border-white/20 px-3 py-2 focus:ring-primary focus:border-primary" placeholder="+1 234 567 890" value="+45 12 34 56 78">
+                    </div>
+                    <div>
+                        <label for="website" class="block text-sm font-medium text-white/80 mb-1">Website</label>
+                        <input type="url" id="website" class="w-full bg-white/10 rounded-lg border border-white/20 px-3 py-2 focus:ring-primary focus:border-primary" placeholder="https://example.com" value="https://techbbq.dk">
+                    </div>
+                    <div>
+                        <label for="linkedin" class="block text-sm font-medium text-white/80 mb-1">LinkedIn</label>
+                        <input type="url" id="linkedin" class="w-full bg-white/10 rounded-lg border border-white/20 px-3 py-2 focus:ring-primary focus:border-primary" placeholder="https://linkedin.com/in/johndoe" value="https://www.linkedin.com/in/thomas-ebdrup-959834/">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/80 mb-1">Profile Photo</label>
+                        <input type="file" id="photo-upload" class="hidden" accept="image/*">
+                        <button type="button" id="upload-btn" class="w-full flex items-center justify-center gap-2 bg-white/5 rounded-lg border border-white/20 px-3 py-2 hover:bg-white/10 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <span>Upload Image</span>
+                        </button>
+                        <input type="hidden" id="photo" value="https://techbbq.dk/wp-content/uploads/2025/10/ThomasEbd_S.png">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-white/80 mb-1">Optional Message</label>
+                        <textarea id="message" rows="3" class="w-full bg-white/10 rounded-lg border border-white/20 px-3 py-2 focus:ring-primary focus:border-primary" placeholder="A short message...">See you at TechBBQ 2025!</textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="lg:col-span-2 space-y-8">
+                <div>
+                    <h3 class="text-xl font-headline font-semibold mb-4">Desktop Preview</h3>
+                    <div id="desktop-preview-container" class="bg-white border border-white/10 rounded-2xl p-6 min-h-[250px]">
+                        <div id="desktop-preview"></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-headline font-semibold mb-4">Mobile Preview</h3>
+                    <div class="bg-foreground border border-white/10 rounded-2xl p-6 min-h-[250px] flex justify-center items-center">
+                        <div id="mobile-preview-wrapper" class="w-[375px] overflow-hidden">
+                            <div id="mobile-preview"></div>
+                        </div>
+                    </div>
+                </div>
+                 <button type="button" id="copy-btn" class="custom-button custom-button-primary hidden">Copy Signature</button>
+            </div>
+        </div>
+    </div>
+    <div id="crop-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex justify-center items-center">
+        <div class="bg-foreground p-6 rounded-2xl max-w-lg w-full">
+            <h3 class="text-xl font-headline font-semibold mb-4">Crop Your Image</h3>
+            <div>
+                <img id="crop-image" src="" alt="Image to crop">
+            </div>
+            <div class="space-y-4 mt-4">
+                <div>
+                    <label for="brightness" class="block text-sm font-medium text-white/80 mb-1">Brightness</label>
+                    <input type="range" id="brightness" min="0" max="200" value="100" class="w-full">
+                </div>
+                <div>
+                    <label for="saturation" class="block text-sm font-medium text-white/80 mb-1">Saturation</label>
+                    <input type="range" id="saturation" min="0" max="200" value="100" class="w-full">
+                </div>
+            </div>
+            <div class="flex justify-end gap-4 mt-4">
+                <button type="button" id="cancel-crop-btn" class="custom-button custom-button-secondary">Cancel</button>
+                <button type="button" id="crop-and-upload-btn" class="custom-button custom-button-primary">Crop & Upload</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

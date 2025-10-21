@@ -1,0 +1,127 @@
+/* Using TailwindCSS via CDN, this file is for custom styles defined in styles.md */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&family=DM+Serif+Text&display=swap');
+
+/* Custom properties from styles.md */
+:root {
+    --primary: 27 91% 55%;
+    --secondary: 351 100% 50%;
+    --accent: 27 100% 67%;
+    --danger: 351 100% 50%;
+    --background: 0 0% 7%;
+    --surface: 0 0% 85%;
+    --foreground: 0 0% 7%;
+    --muted: 0 0% 40%;
+
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--foreground) / 0.25);
+}
+
+.font-headline {
+    font-family: 'Playfair Display', serif; /* Using a more common serif as Host Grotesk is premium */
+}
+
+.font-body {
+    font-family: 'Inter', sans-serif;
+}
+
+.font-serif {
+    font-family: 'DM Serif Text', serif;
+}
+
+.glass {
+    background: hsl(0 0% 100% / 0.08);
+    backdrop-filter: blur(16px);
+    border: 1px solid hsl(0 0% 100% / 0.12);
+    box-shadow: var(--shadow-elegant);
+}
+
+/* Custom Button Styles from styles.md */
+.custom-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    height: 48px;
+    padding: 0 24px;
+    border: 1px solid;
+    border-radius: 12px;
+    font-weight: 600;
+    color: white;
+    overflow: hidden;
+    transition: all 400ms ease-out;
+    transform: translateZ(0);
+}
+
+.custom-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--fill-color);
+    transform: skewX(-30deg) translateX(-120%);
+    transition: transform 400ms ease-out;
+    z-index: -1;
+}
+
+.custom-button:hover::before {
+    transform: skewX(-30deg) translateX(0);
+}
+
+.custom-button:active {
+    transform: scale(0.95);
+}
+
+/* Primary Variant (Red Glow) */
+.custom-button-primary {
+    --fill-color: hsl(var(--secondary));
+    border-color: hsl(var(--secondary) / 0.4);
+    box-shadow: 0 0 20px rgba(255, 0, 40, 0.6);
+}
+
+.custom-button-primary:hover {
+    color: white;
+    box-shadow: 0 0 30px rgba(255, 0, 40, 0.8);
+}
+
+/* Secondary Variant (Orange Glow) */
+.custom-button-secondary {
+    --fill-color: hsl(var(--primary));
+    border-color: hsl(var(--primary) / 0.4);
+    box-shadow: 0 0 20px rgba(244, 128, 34, 0.6);
+}
+
+.custom-button-secondary:hover {
+    color: white;
+    box-shadow: 0 0 30px rgba(244, 128, 34, 0.8);
+}
+
+
+/* Signature-specific styles */
+.signature-container {
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+    color: #333;
+}
+
+.signature-container-dark {
+    color: #f1f1f1;
+}
+
+.signature-container a {
+    color: #ed634c;
+    text-decoration: none;
+}
+
+.signature-container-dark a {
+    color: #ed634c;
+}
+
+.signature-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
