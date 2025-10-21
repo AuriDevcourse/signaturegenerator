@@ -335,17 +335,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const blob = new Blob([signatureContent], { type: 'text/html' });
             const item = new ClipboardItem({ 'text/html': blob });
             navigator.clipboard.write([item]).then(() => {
-                copyBtn.textContent = 'Copied!';
+                copyBtn.innerHTML = '<span class="relative z-10">Copied!</span>';
                 setTimeout(() => {
-                    copyBtn.textContent = 'Copy Signature';
+                    copyBtn.innerHTML = '<span class="relative z-10">Copy Signature</span>';
                 }, 2000);
             });
         } catch (e) {
             // Fallback for older browsers
             navigator.clipboard.writeText(signatureContent).then(() => {
-                copyBtn.textContent = 'Copied!';
+                copyBtn.innerHTML = '<span class="relative z-10">Copied!</span>';
                 setTimeout(() => {
-                    copyBtn.textContent = 'Copy Signature';
+                    copyBtn.innerHTML = '<span class="relative z-10">Copy Signature</span>';
                 }, 2000);
             });
         }
