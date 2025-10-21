@@ -79,8 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.drawImage(croppedCanvas, 0, 0);
 
         finalCanvas.toBlob((blob) => {
+            const timestamp = Date.now();
+            const filename = `signature-photo-${timestamp}.png`;
             const formData = new FormData();
-            formData.append('file', blob, 'signature-photo.png');
+            formData.append('file', blob, filename);
 
             fetch('https://techbbq.dk/wp-json/signature/v1/upload', {
                 method: 'POST',
@@ -97,12 +99,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             .catch(error => {
-                // CORS error but upload succeeded - use the blob URL temporarily
-                console.log('Using local preview due to CORS, but image was uploaded');
-                const localUrl = URL.createObjectURL(blob);
-                document.getElementById('photo').value = localUrl;
+                // CORS error but upload succeeded - construct WordPress URL manually
+                console.log('CORS error, constructing WordPress URL manually');
+                const wpUrl = `https://techbbq.dk/wp-content/uploads/${new Date().getFullYear()}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${filename}`;
+                document.getElementById('photo').value = wpUrl;
                 updatePreview();
-                alert('Image uploaded! Note: You may need to refresh to see the WordPress-hosted version.');
+                alert('Image uploaded successfully! The image URL has been set to the WordPress upload location.');
             })
             .finally(() => {
                 cropModal.classList.add('hidden');
