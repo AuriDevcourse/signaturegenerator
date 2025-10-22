@@ -17,27 +17,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialDots = document.getElementById('tutorial-dots');
     const tutorialNext = document.getElementById('tutorial-next');
     const tutorialPrev = document.getElementById('tutorial-prev');
+    const tutorialClose = document.getElementById('tutorial-close');
+    const howToBtn = document.getElementById('how-to-btn');
     
     const tutorialSteps = [
         {
-            title: "Step 1: Fill in Your Details",
-            content: "Enter your personal information in the form on the left side. Start with your name, job title, email, and phone number."
+            title: "Step 1: Open Gmail Settings",
+            content: "Open your Gmail. Click on the Settings icon (gear icon) in the top right corner and press 'See all settings'.",
+            gif: "https://techbbq.dk/wp-content/uploads/2025/10/1stepsignature.gif"
         },
         {
-            title: "Step 2: Upload Your Photo",
-            content: "Click the 'Upload Image' button to add your profile photo. You can crop and adjust the image before uploading."
+            title: "Step 2: Create New Signature",
+            content: "Scroll down to the 'Signature' section and click '+ Create new' to create a new signature. Give it a name.",
+            gif: "https://techbbq.dk/wp-content/uploads/2025/10/2stepsignature.gif"
         },
         {
-            title: "Step 3: Add Optional Information",
-            content: "Expand 'Default Information' to add your address, website, and social media links. You can also add a personal message."
+            title: "Step 3: Paste Your Signature",
+            content: "Paste your copied signature in the empty field (Ctrl+V or Cmd+V if you're on Mac). Select when to use it for new emails and replies.",
+            gif: "https://techbbq.dk/wp-content/uploads/2025/10/3stepsignature.gif"
         },
         {
-            title: "Step 4: Preview Your Signature",
-            content: "Check the Desktop and Mobile previews on the right to see how your signature will look in different email clients."
-        },
-        {
-            title: "Step 5: Copy & Use",
-            content: "Once you're happy with your signature, click the 'Copy Signature' button and paste it into your email client's signature settings."
+            title: "Step 4: Save and Test",
+            content: "Click 'Save Changes' at the bottom. Compose a new email to test. If the signature doesn't appear, click the pencil icon in the bottom toolbar and select your signature.",
+            gif: "https://techbbq.dk/wp-content/uploads/2025/10/4stepsignature.gif"
         }
     ];
 
@@ -46,7 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function showTutorialStep(stepIndex) {
         const step = tutorialSteps[stepIndex];
         tutorialStep.innerHTML = `
-            <h3 class="text-lg font-semibold text-primary">${step.title}</h3>
+            <div class="mb-4">
+                <img src="${step.gif}" alt="${step.title}" class="w-full rounded-lg border border-white/20">
+            </div>
+            <h3 class="text-lg font-semibold text-primary mb-2">${step.title}</h3>
             <p class="text-white/80">${step.content}</p>
         `;
 
@@ -57,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update buttons
         tutorialPrev.classList.toggle('hidden', stepIndex === 0);
-        tutorialNext.querySelector('span').textContent = stepIndex === tutorialSteps.length - 1 ? 'Get Started' : 'Next';
+        tutorialNext.querySelector('span').textContent = stepIndex === tutorialSteps.length - 1 ? 'Finish' : 'Next';
     }
 
     tutorialNext.addEventListener('click', () => {
@@ -66,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showTutorialStep(currentStep);
         } else {
             tutorialModal.classList.add('hidden');
-            localStorage.setItem('tutorialCompleted', 'true');
+            currentStep = 0;
         }
     });
 
@@ -77,12 +82,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Show tutorial on first visit
-    if (!localStorage.getItem('tutorialCompleted')) {
-        showTutorialStep(0);
-    } else {
+    // Close button handler
+    tutorialClose.addEventListener('click', () => {
         tutorialModal.classList.add('hidden');
-    }
+        currentStep = 0;
+    });
+
+    // Click outside to close
+    tutorialModal.addEventListener('click', (e) => {
+        if (e.target === tutorialModal) {
+            tutorialModal.classList.add('hidden');
+            currentStep = 0;
+        }
+    });
+
+    // How to button handler
+    howToBtn.addEventListener('click', () => {
+        currentStep = 0;
+        showTutorialStep(0);
+        tutorialModal.classList.remove('hidden');
+    });
 
     uploadBtn.addEventListener('click', () => photoUpload.click());
 

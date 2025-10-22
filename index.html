@@ -150,16 +150,27 @@
                         </div>
                     </div>
                 </div>
-                 <button type="button" id="copy-btn" class="custom-button custom-button-primary hidden relative inline-flex items-center justify-center min-w-[120px] h-12 px-6 border border-secondary/40 rounded-xl font-semibold text-white bg-transparent overflow-hidden transition-all duration-400 ease-out active:scale-95 shadow-[0_0_20px_rgba(255,0,40,0.6)] hover:shadow-[0_0_30px_rgba(255,0,40,0.8)]">
-                    <span class="relative z-10">Copy Signature</span>
-                </button>
+                <div class="flex gap-4 flex-wrap">
+                    <button type="button" id="copy-btn" class="custom-button custom-button-primary hidden relative inline-flex items-center justify-center min-w-[120px] h-12 px-6 border border-secondary/40 rounded-xl font-semibold text-white bg-transparent overflow-hidden transition-all duration-400 ease-out active:scale-95 shadow-[0_0_20px_rgba(255,0,40,0.6)] hover:shadow-[0_0_30px_rgba(255,0,40,0.8)]">
+                        <span class="relative z-10">Copy Signature</span>
+                    </button>
+                    <button type="button" id="how-to-btn" class="custom-button custom-button-secondary relative inline-flex items-center justify-center min-w-[120px] h-12 px-6 border border-primary/40 rounded-xl font-semibold text-white bg-transparent overflow-hidden transition-all duration-400 ease-out active:scale-95 shadow-[0_0_20px_rgba(244,128,34,0.6)] hover:shadow-[0_0_30px_rgba(244,128,34,0.8)]">
+                        <span class="relative z-10">How to Add Signature</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
     <!-- Tutorial Modal -->
-    <div id="tutorial-modal" class="fixed inset-0 bg-black/80 z-50 flex justify-center items-center">
-        <div class="bg-foreground/95 backdrop-blur-lg p-8 rounded-2xl max-w-md w-full mx-4 border border-white/20">
-            <h2 class="text-2xl font-grotesk font-bold mb-4">Welcome to TecHBBQ Signature Generator! </h2>
+    <div id="tutorial-modal" class="fixed inset-0 bg-black/80 z-50 flex justify-center items-center hidden">
+        <div class="bg-foreground/95 backdrop-blur-lg p-8 rounded-2xl max-w-2xl w-full mx-4 border border-white/20 relative">
+            <button type="button" id="tutorial-close" class="absolute top-4 right-4 text-white/60 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h2 class="text-2xl font-grotesk font-bold mb-6">How to Add Your Signature</h2>
             <div id="tutorial-step" class="space-y-4">
                 <!-- Step content will be inserted here -->
             </div>
