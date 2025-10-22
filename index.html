@@ -170,7 +170,7 @@
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             </button>
-            <h2 class="text-2xl font-grotesk font-bold mb-6">How to Add Your Signature</h2>
+            <h2 class="text-2xl font-grotesk font-bold mb-6">Welcome to Email Signature Generator!</h2>
             <div id="tutorial-step" class="space-y-4">
                 <!-- Step content will be inserted here -->
             </div>
@@ -180,6 +180,31 @@
                     <!-- Dots will be inserted here -->
                 </div>
                 <button type="button" id="tutorial-next" class="custom-button custom-button-primary relative inline-flex items-center justify-center px-6 h-10 border border-secondary/40 rounded-xl font-semibold text-white bg-transparent overflow-hidden transition-all duration-400 ease-out active:scale-95 shadow-[0_0_20px_rgba(255,0,40,0.6)] hover:shadow-[0_0_30px_rgba(255,0,40,0.8)]">
+                    <span class="relative z-10">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gmail Setup Modal -->
+    <div id="gmail-modal" class="fixed inset-0 bg-black/80 z-50 flex justify-center items-center hidden">
+        <div class="bg-foreground/95 backdrop-blur-lg p-8 rounded-2xl max-w-2xl w-full mx-4 border border-white/20 relative">
+            <button type="button" id="gmail-close" class="absolute top-4 right-4 text-white/60 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h2 class="text-2xl font-grotesk font-bold mb-6">How to Add Your Signature to Gmail</h2>
+            <div id="gmail-step" class="space-y-4">
+                <!-- Step content will be inserted here -->
+            </div>
+            <div class="flex justify-between items-center mt-6">
+                <button type="button" id="gmail-prev" class="text-sm text-white/60 hover:text-white transition-colors hidden">← Previous</button>
+                <div class="flex gap-2" id="gmail-dots">
+                    <!-- Dots will be inserted here -->
+                </div>
+                <button type="button" id="gmail-next" class="custom-button custom-button-primary relative inline-flex items-center justify-center px-6 h-10 border border-secondary/40 rounded-xl font-semibold text-white bg-transparent overflow-hidden transition-all duration-400 ease-out active:scale-95 shadow-[0_0_20px_rgba(255,0,40,0.6)] hover:shadow-[0_0_30px_rgba(255,0,40,0.8)]">
                     <span class="relative z-10">Next</span>
                 </button>
             </div>

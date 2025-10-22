@@ -22,24 +22,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const tutorialSteps = [
         {
-            title: "Step 1: Open Gmail Settings",
-            content: "Open your Gmail. Click on the Settings icon (gear icon) in the top right corner and press 'See all settings'.",
-            gif: "https://techbbq.dk/wp-content/uploads/2025/10/1stepsignature.gif"
+            title: "Welcome to Email Signature Generator!",
+            content: "This tool helps you create a professional email signature. Just put your name, job title, email, phone, and your personal LinkedIn profile in the form on the left."
         },
         {
-            title: "Step 2: Create New Signature",
-            content: "Scroll down to the 'Signature' section and click '+ Create new' to create a new signature. Give it a name.",
-            gif: "https://techbbq.dk/wp-content/uploads/2025/10/2stepsignature.gif"
+            title: "Upload Your Photo",
+            content: "Click 'Upload Image' to add your profile photo. You can crop it, adjust brightness and saturation with filters. The image saves automatically to WordPress."
         },
         {
-            title: "Step 3: Paste Your Signature",
-            content: "Paste your copied signature in the empty field (Ctrl+V or Cmd+V if you're on Mac). Select when to use it for new emails and replies.",
-            gif: "https://techbbq.dk/wp-content/uploads/2025/10/3stepsignature.gif"
+            title: "Add Optional Message & Links",
+            content: "You can add an optional message with a link if you want. Click 'Add Link' - first write the word you want to be linked, then paste the link itself. You can also expand 'Default Information' to change company details like address, website, and social media."
         },
         {
-            title: "Step 4: Save and Test",
-            content: "Click 'Save Changes' at the bottom. Compose a new email to test. If the signature doesn't appear, click the pencil icon in the bottom toolbar and select your signature.",
-            gif: "https://techbbq.dk/wp-content/uploads/2025/10/4stepsignature.gif"
+            title: "Ready to Use!",
+            content: "Once you've added all your information, click 'Copy Signature' to copy it. Then use the 'How to Add Signature' button to see step-by-step instructions on how to add the finished signature to Gmail."
         }
     ];
 
@@ -48,9 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function showTutorialStep(stepIndex) {
         const step = tutorialSteps[stepIndex];
         tutorialStep.innerHTML = `
-            <div class="mb-4">
-                <img src="${step.gif}" alt="${step.title}" class="w-full rounded-lg border border-white/20">
-            </div>
             <h3 class="text-lg font-semibold text-primary mb-2">${step.title}</h3>
             <p class="text-white/80">${step.content}</p>
         `;
@@ -72,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             tutorialModal.classList.add('hidden');
             currentStep = 0;
+            localStorage.setItem('tutorialCompleted', 'true');
         }
     });
 
@@ -96,12 +90,100 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // How to button handler
+    // Gmail setup modal functionality
+    const gmailModal = document.getElementById('gmail-modal');
+    const gmailStep = document.getElementById('gmail-step');
+    const gmailDots = document.getElementById('gmail-dots');
+    const gmailNext = document.getElementById('gmail-next');
+    const gmailPrev = document.getElementById('gmail-prev');
+    const gmailClose = document.getElementById('gmail-close');
+
+    const gmailSteps = [
+        {
+            title: "Step 1: Open Gmail Settings",
+            content: "Open your Gmail. Click on the Settings icon (gear icon) in the top right corner and press 'See all settings'.",
+            gif: "https://techbbq.dk/wp-content/uploads/2025/10/1stepsignature.gif"
+        },
+        {
+            title: "Step 2: Create New Signature",
+            content: "Scroll down to the 'Signature' section and click '+ Create new' to create a new signature. Give it a name.",
+            gif: "https://techbbq.dk/wp-content/uploads/2025/10/2stepsignature.gif"
+        },
+        {
+            title: "Step 3: Paste Your Signature",
+            content: "Paste your copied signature in the empty field (Ctrl+V or Cmd+V if you're on Mac). Select when to use it for new emails and replies.",
+            gif: "https://techbbq.dk/wp-content/uploads/2025/10/3stepsignature.gif"
+        },
+        {
+            title: "Step 4: Save and Test",
+            content: "Click 'Save Changes' at the bottom. Compose a new email to test. If the signature doesn't appear, click the pencil icon in the bottom toolbar and select your signature.",
+            gif: "https://techbbq.dk/wp-content/uploads/2025/10/4stepsignature.gif"
+        }
+    ];
+
+    let gmailCurrentStep = 0;
+
+    function showGmailStep(stepIndex) {
+        const step = gmailSteps[stepIndex];
+        gmailStep.innerHTML = `
+            <div class="mb-4">
+                <img src="${step.gif}" alt="${step.title}" class="w-full rounded-lg border border-white/20">
+            </div>
+            <h3 class="text-lg font-semibold text-primary mb-2">${step.title}</h3>
+            <p class="text-white/80">${step.content}</p>
+        `;
+
+        // Update dots
+        gmailDots.innerHTML = gmailSteps.map((_, i) => 
+            `<div class="w-2 h-2 rounded-full ${i === stepIndex ? 'bg-primary' : 'bg-white/30'}"></div>`
+        ).join('');
+
+        // Update buttons
+        gmailPrev.classList.toggle('hidden', stepIndex === 0);
+        gmailNext.querySelector('span').textContent = stepIndex === gmailSteps.length - 1 ? 'Finish' : 'Next';
+    }
+
+    gmailNext.addEventListener('click', () => {
+        if (gmailCurrentStep < gmailSteps.length - 1) {
+            gmailCurrentStep++;
+            showGmailStep(gmailCurrentStep);
+        } else {
+            gmailModal.classList.add('hidden');
+            gmailCurrentStep = 0;
+        }
+    });
+
+    gmailPrev.addEventListener('click', () => {
+        if (gmailCurrentStep > 0) {
+            gmailCurrentStep--;
+            showGmailStep(gmailCurrentStep);
+        }
+    });
+
+    gmailClose.addEventListener('click', () => {
+        gmailModal.classList.add('hidden');
+        gmailCurrentStep = 0;
+    });
+
+    gmailModal.addEventListener('click', (e) => {
+        if (e.target === gmailModal) {
+            gmailModal.classList.add('hidden');
+            gmailCurrentStep = 0;
+        }
+    });
+
+    // How to button handler - opens Gmail setup modal
     howToBtn.addEventListener('click', () => {
-        currentStep = 0;
+        gmailCurrentStep = 0;
+        showGmailStep(0);
+        gmailModal.classList.remove('hidden');
+    });
+
+    // Show tutorial on first visit
+    if (!localStorage.getItem('tutorialCompleted')) {
         showTutorialStep(0);
         tutorialModal.classList.remove('hidden');
-    });
+    }
 
     uploadBtn.addEventListener('click', () => photoUpload.click());
 
